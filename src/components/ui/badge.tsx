@@ -3,36 +3,38 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center gap-1 whitespace-nowrap rounded-[var(--radius-md)] font-sans font-semibold text-[11px] h-[22px] px-2 transition-colors",
+  "inline-flex items-center gap-1 whitespace-nowrap rounded-[6px] font-heading font-bold text-[11px] h-[22px] px-2 transition-colors",
   {
     variants: {
       variant: {
-        neutral:
-          "bg-[hsl(var(--neutral)/0.15)] text-[hsl(var(--strong))] border border-[hsl(var(--disabled)/0.35)]",
+        default:
+          "bg-[var(--surface-2)] text-[var(--muted)]",
+        grade:
+          "bg-[color-mix(in_oklch,var(--purple)_16%,transparent)] text-[var(--purple)]",
         accent:
-          "bg-[hsl(var(--app-accent))] text-white",
+          "bg-[var(--accent)] text-white",
         accentGhost:
-          "bg-[hsl(var(--app-accent)/0.1)] text-[hsl(var(--app-accent))] border border-[hsl(var(--app-accent)/0.22)]",
+          "bg-[var(--accent-soft)] text-[var(--accent)]",
         success:
-          "bg-[hsl(var(--success))] text-white",
+          "bg-[#1fad66] text-white",
         successGhost:
-          "bg-[hsl(var(--success)/0.1)] text-[hsl(var(--success))] border border-[hsl(var(--success)/0.18)]",
+          "bg-[color-mix(in_oklch,#1fad66_12%,transparent)] text-[#1fad66]",
         warningGhost:
-          "bg-[hsl(var(--warning)/0.1)] text-[hsl(var(--warning-secondary))] border border-[hsl(var(--warning)/0.2)]",
+          "bg-[color-mix(in_oklch,#f0a030_12%,transparent)] text-[#b07018]",
         info:
-          "bg-[hsl(var(--info))] text-white",
+          "bg-[#2a6fdb] text-white",
         destructiveGhost:
-          "bg-[hsl(var(--destructive)/0.1)] text-[hsl(var(--destructive))] border border-[hsl(var(--destructive)/0.18)]",
+          "bg-[color-mix(in_oklch,#e0466b_12%,transparent)] text-[#e0466b]",
         brandGhost:
-          "bg-[hsl(var(--brand)/0.08)] text-[hsl(var(--brand))] border border-[hsl(var(--brand)/0.18)]",
+          "bg-[color-mix(in_oklch,var(--purple)_12%,transparent)] text-[var(--purple)]",
       },
       shape: {
-        default: "rounded-[var(--radius-md)]",
+        default: "rounded-[6px]",
         pill: "rounded-full px-2.5",
       },
     },
     defaultVariants: {
-      variant: "neutral",
+      variant: "default",
       shape: "default",
     },
   }
