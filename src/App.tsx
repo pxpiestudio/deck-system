@@ -2,7 +2,6 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Card } from "@/components/ui/card"
 import { Panel } from "@/components/ui/panel"
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"
 import { InboxRow } from "@/components/ui/inbox-row"
@@ -10,20 +9,14 @@ import { StatTile } from "@/components/ui/stat-tile"
 import { Chip } from "@/components/ui/chip"
 import { SegmentedControl } from "@/components/ui/segmented-control"
 import { Input } from "@/components/ui/input"
+import { Nav } from "@/components/ui/nav"
+import { ProductCard } from "@/components/ui/product-card"
+import { SearchBar } from "@/components/ui/search-bar"
+import { Skeleton, SkeletonGrid } from "@/components/ui/skeleton"
+import { Hero } from "@/components/ui/hero"
+import { Footer } from "@/components/ui/footer"
 import { AnimateIn, ClosablePanel } from "@/components/motion"
-import { Search, Moon, Sun } from "lucide-react"
-
-function Swatch({ name, token, style }: { name: string; token: string; style?: React.CSSProperties }) {
-  return (
-    <div className="rounded-lg overflow-hidden bg-surface border border-border">
-      <div className="h-20 w-full" style={style} />
-      <div className="p-3">
-        <div className="font-heading font-bold text-[13px] text-text">{name}</div>
-        <div className="font-mono text-[11px] text-muted mt-0.5">{token}</div>
-      </div>
-    </div>
-  )
-}
+import { Search, Globe, Mail, MessageCircle } from "lucide-react"
 
 function SectionTitle({ eyebrow, title, description }: { eyebrow: string; title: string; description?: string }) {
   return (
@@ -49,6 +42,12 @@ const DEMO_CARDS = [
   { name: "Miraidon ex", set: "Paldea Evolved", num: "253/193", price: 64.25, listings: 52, delta: -3.8, hue: 280, chip: "Special" },
 ]
 
+const DEMO_SEARCH_RESULTS = [
+  { id: "1", name: "Charizard ex", set: "Obsidian Flames", num: "125/197", price: 89.99, hue: 22 },
+  { id: "2", name: "Umbreon VMAX", set: "Evolving Skies", num: "215/203", price: 44.50, hue: 260 },
+  { id: "3", name: "Pikachu V", set: "Vivid Voltage", num: "043/185", price: 12.00, hue: 48 },
+]
+
 const DEMO_TABLE = [
   { store: "TCGplayer", price: 458.00, over: "+$45.50", market: true },
   { store: "CardMarket", price: 441.00, over: "+$28.50", market: false },
@@ -61,6 +60,36 @@ const DEMO_INBOX = [
   { id: 3, title: "Pikachu V", subtitle: "Vivid Voltage · Seller: MintCards", status: "✓ Confirmed", statusColor: "info" as const, price: 12.00, date: "Jun 22", hue: 48 },
 ]
 
+const FOOTER_COLUMNS = [
+  {
+    title: "Marketplace",
+    links: [
+      { label: "Browse cards" },
+      { label: "Browse sets" },
+      { label: "Price guide" },
+      { label: "Sealed product" },
+    ],
+  },
+  {
+    title: "Sell",
+    links: [
+      { label: "List a card" },
+      { label: "Seller portal" },
+      { label: "How it works" },
+      { label: "Pricing" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About" },
+      { label: "Blog" },
+      { label: "Careers" },
+      { label: "Contact" },
+    ],
+  },
+]
+
 export default function App() {
   const [theme, setTheme] = useState<"light" | "dark">("light")
   const [loadingBtn, setLoadingBtn] = useState(false)
@@ -68,6 +97,8 @@ export default function App() {
   const [chips, setChips] = useState<string[]>(["all"])
   const [closableOpen, setClosableOpen] = useState(true)
   const [searchValue, setSearchValue] = useState("")
+  const [searchLoading, setSearchLoading] = useState(false)
+  const [searchResults, setSearchResults] = useState<typeof DEMO_SEARCH_RESULTS | undefined>(undefined)
 
   const toggleTheme = () => {
     const next = theme === "light" ? "dark" : "light"
@@ -81,207 +112,117 @@ export default function App() {
     )
   }
 
+  const handleSearch = (query: string) => {
+    setSearchValue(query)
+    if (query.length > 0) {
+      setSearchLoading(true)
+      setTimeout(() => {
+        setSearchResults(
+          DEMO_SEARCH_RESULTS.filter((r) =>
+            r.name.toLowerCase().includes(query.toLowerCase())
+          )
+        )
+        setSearchLoading(false)
+      }, 600)
+    } else {
+      setSearchResults(undefined)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-bg text-text">
-      {/* Navbar */}
-      <nav className="sticky top-0 z-10 flex items-center justify-between px-7 h-16 border-b border-border bg-bg/80 backdrop-blur-xl saturate-150">
-        <div className="flex items-center gap-2.5 font-heading font-bold text-xl tracking-tight text-text">
-          <img src="/assets/deckcenter-mark.svg" alt="Deckcenter" className="h-7 w-auto" />
-          <span className="hidden sm:inline">Deckcenter</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <motion.button
-            onClick={toggleTheme}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-strong bg-surface text-text font-heading font-semibold text-xs cursor-pointer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {theme === "light" ? <Moon size={14} /> : <Sun size={14} />}
-            {theme === "light" ? "Dark" : "Light"}
-          </motion.button>
-        </div>
-      </nav>
+      {/* Nav */}
+      <Nav
+        links={[
+          { label: "Browse", active: true },
+          { label: "Sets" },
+          { label: "Price guide" },
+          { label: "Sell" },
+        ]}
+        user={{ name: "Ash Ketchum", initials: "AK" }}
+        cartCount={6}
+        onThemeToggle={toggleTheme}
+        theme={theme}
+      />
+
+      {/* Hero */}
+      <Hero
+        variant="clean"
+        badge={{ dot: true, text: "Live marketplace" }}
+        title={<>The best place to buy & sell <span className="text-accent">Pokémon cards</span></>}
+        subtitle="Connect directly with local sellers. No shipping, no hassle — just walk in and collect your cards."
+        stats={[
+          { value: "12k+", label: "Active listings" },
+          { value: "3.2k", label: "Trainers" },
+          { value: "$840k", label: "Cards sold" },
+        ]}
+      >
+        <Button>Start browsing</Button>
+        <Button variant="ghost">How it works</Button>
+      </Hero>
 
       <main className="max-w-[1100px] mx-auto px-6 md:px-12 pb-32">
-        {/* Hero */}
-        <section className="pt-16 pb-10">
+        {/* Search Bar */}
+        <section className="pt-16">
+          <SectionTitle
+            eyebrow="Components"
+            title="Search"
+            description="Main search with autocomplete dropdown, loading shimmer, and keyboard-navigable results."
+          />
           <AnimateIn>
-            <div className="relative overflow-hidden rounded-2xl p-12 md:p-14 mb-10 bg-navy-surface">
-              <div className="absolute inset-0 opacity-80"
-                style={{
-                  background: "radial-gradient(600px 360px at 88% 120%, color-mix(in oklch, var(--magenta) 55%, transparent), transparent 60%), radial-gradient(520px 320px at 6% -20%, color-mix(in oklch, var(--purple) 50%, transparent), transparent 60%)",
-                }}
+            <Canvas>
+              <SearchBar
+                placeholder="Search Charizard ex, sets, sealed product…"
+                results={searchResults}
+                loading={searchLoading}
+                onSearch={handleSearch}
               />
-              <div className="relative z-[2] max-w-[640px]">
-                <img src="/assets/deckcenter-logo-light.svg" alt="Deckcenter" className="h-14 w-auto mb-5" />
-                <h1 className="text-white mb-3.5">Sleeve</h1>
-                <p className="text-on-navy/75 text-base leading-relaxed mb-6 max-w-[52ch]">
-                  A complete, themeable foundation for the Pokémon TCG marketplace. Every surface, token, component, and pattern — light and dark.
-                </p>
-                <div className="flex flex-wrap gap-2.5">
-                  {[
-                    { color: "#de0e7f", label: "Magenta" },
-                    { color: "#8a2bb8", label: "Purple" },
-                    { color: "#121427", label: "Navy", outline: true },
-                  ].map((chip) => (
-                    <span key={chip.label} className="inline-flex items-center gap-2 bg-white/10 border border-white/[0.16] rounded-full px-3.5 py-1.5 text-[13px] font-semibold text-white">
-                      <span className="w-2.5 h-2.5 rounded-[3px] block" style={{ background: chip.color, outline: chip.outline ? "1px solid rgba(255,255,255,.3)" : undefined }} />
-                      {chip.label}
-                    </span>
-                  ))}
-                  <span className="inline-flex items-center gap-2 bg-white/10 border border-white/[0.16] rounded-full px-3.5 py-1.5 text-[13px] font-semibold text-white">
-                    Saira · Geist
-                  </span>
-                </div>
-              </div>
-            </div>
+            </Canvas>
           </AnimateIn>
         </section>
 
-        {/* Color */}
+        {/* Product Cards with 3D Tilt */}
         <section className="pt-16">
           <SectionTitle
-            eyebrow="Foundations"
-            title="Color"
-            description="Semantic tokens resolve per-theme — flip data-theme and everything follows."
-          />
-          <AnimateIn delay={0.1}>
-            <h3 className="h3 text-[15.5px] mb-3.5">Brand</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-8">
-              <Swatch name="Magenta" token="#de0e7f" style={{ background: "#de0e7f" }} />
-              <Swatch name="Purple" token="#8a2bb8" style={{ background: "#8a2bb8" }} />
-              <Swatch name="Navy" token="#121427" style={{ background: "#121427" }} />
-              <Swatch name="Lavender" token="#e8edf9" style={{ background: "#e8edf9", borderBottom: "1px solid var(--border)" }} />
-            </div>
-          </AnimateIn>
-
-          <AnimateIn delay={0.15}>
-            <h3 className="h3 text-[15.5px] mb-3.5">Surfaces <span className="font-medium text-faint text-xs ml-1">— theme-reactive</span></h3>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
-              <Swatch name="Background" token="--bg" style={{ background: "var(--bg)" }} />
-              <Swatch name="Background 2" token="--bg-2" style={{ background: "var(--bg-2)" }} />
-              <Swatch name="Surface" token="--surface" style={{ background: "var(--surface)", boxShadow: "inset 0 0 0 1px var(--border)" }} />
-              <Swatch name="Surface 2" token="--surface-2" style={{ background: "var(--surface-2)" }} />
-              <Swatch name="Navy surface" token="--navy-surface" style={{ background: "var(--navy-surface)" }} />
-            </div>
-          </AnimateIn>
-
-          <AnimateIn delay={0.2}>
-            <h3 className="h3 text-[15.5px] mb-3.5">Status &amp; signal</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <Swatch name="Success / Up" token="#1fad66" style={{ background: "#1fad66" }} />
-              <Swatch name="Down / Alert" token="#e0466b" style={{ background: "#e0466b" }} />
-              <Swatch name="Amber / Pending" token="#f0a030" style={{ background: "#f0a030" }} />
-              <Swatch name="Blue / Confirmed" token="#2a6fdb" style={{ background: "#2a6fdb" }} />
-            </div>
-          </AnimateIn>
-        </section>
-
-        {/* Typography */}
-        <section className="pt-16">
-          <SectionTitle
-            eyebrow="Foundations"
-            title="Typography"
-            description="Saira ExtraBold carries headings with tight tracking. Geist handles body copy and inputs."
+            eyebrow="Components"
+            title="Product Cards"
+            description="The core marketplace surface with 3D perspective tilt on hover. Move your mouse over the cards."
           />
           <AnimateIn>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div className="bg-surface border border-border rounded-lg p-6 shadow">
-                <div className="text-[11px] font-bold tracking-[0.08em] uppercase text-faint">Display / Headings</div>
-                <div className="font-heading font-extrabold text-[56px] leading-none tracking-[-0.03em] my-2.5">Aa</div>
-                <div className="font-heading font-bold text-base text-text">Saira 800</div>
-                <div className="text-muted text-xs mt-1">400 · 500 · 600 · 700 · 800</div>
+            <Canvas>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                {DEMO_CARDS.map((card) => (
+                  <ProductCard key={card.name} {...card} />
+                ))}
               </div>
-              <div className="bg-surface border border-border rounded-lg p-6 shadow">
-                <div className="text-[11px] font-bold tracking-[0.08em] uppercase text-faint">Body / Inputs</div>
-                <div className="font-sans font-medium text-[56px] leading-none tracking-[-0.01em] my-2.5">Aa</div>
-                <div className="font-heading font-bold text-base text-text">Geist</div>
-                <div className="text-muted text-xs mt-1">400 · 500 · 600 · 700</div>
-              </div>
-            </div>
-          </AnimateIn>
-
-          <AnimateIn delay={0.1}>
-            <div className="bg-surface border border-border rounded-lg overflow-hidden">
-              {[
-                { label: "Display", spec: "Saira 800 · clamp→96 / -.035em", size: "46px", tracking: "-0.035em" },
-                { label: "Heading 1", spec: "Saira 800 · clamp→44", size: "36px", tracking: "-0.02em" },
-                { label: "Heading 2", spec: "Saira 700 · 26–30", size: "26px", tracking: "-0.02em" },
-                { label: "Heading 3 · card titles", spec: "Saira 700 · 15–19", size: "18px" },
-                { label: "Lead paragraph", spec: "Geist 500 · 16–17", size: "16px", muted: true },
-                { label: "Body — default UI text", spec: "Geist 400 · 14–15", size: "14.5px" },
-                { label: "Small — meta, captions", spec: "Geist 400 · 12–13", size: "12.5px", muted: true },
-                { label: "EYEBROW LABEL", spec: "Saira 500 · 11.5 · .14em caps", size: "11.5px", eyebrow: true },
-              ].map((t, i) => (
-                <div key={i} className="flex items-baseline justify-between gap-4 px-5 md:px-6 py-4 border-b border-border last:border-0">
-                  <span
-                    className="font-heading font-extrabold"
-                    style={{
-                      fontSize: t.size,
-                      letterSpacing: t.tracking || (t.eyebrow ? "0.14em" : undefined),
-                      textTransform: t.eyebrow ? "uppercase" : undefined,
-                      color: t.eyebrow ? "var(--accent)" : t.muted ? "var(--muted)" : "var(--text)",
-                    }}
-                  >
-                    {t.label}
-                  </span>
-                  <span className="font-mono text-[11px] text-faint whitespace-nowrap">{t.spec}</span>
-                </div>
-              ))}
-            </div>
+            </Canvas>
           </AnimateIn>
         </section>
 
-        {/* Spacing */}
+        {/* Skeleton */}
         <section className="pt-16">
           <SectionTitle
-            eyebrow="Foundations"
-            title="Spacing &amp; Radius"
-            description="Radius is driven by --radius (18px) and derived tokens."
+            eyebrow="Components"
+            title="Skeleton"
+            description="Loading shimmer placeholders for cards, rows, and grids."
           />
           <AnimateIn>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-surface border border-border rounded-lg p-6">
-                <div className="font-heading font-bold text-sm mb-3.5 text-text">Spacing scale</div>
-                <div className="flex flex-col gap-2.5">
-                  {[
-                    { px: 8, label: "inline gaps, chip padding" },
-                    { px: 12, label: "card inner padding" },
-                    { px: 16, label: "section gutters" },
-                    { px: 24, label: "card padding" },
-                    { px: 48, label: "section side padding" },
-                    { px: 96, label: "section vertical rhythm" },
-                  ].map((s) => (
-                    <div key={s.px} className="flex items-center gap-3">
-                      <div className="h-3 bg-accent rounded-sm flex-shrink-0" style={{ width: s.px / 2 }} />
-                      <code className="text-xs w-8 text-text">{s.px}</code>
-                      <span className="text-xs text-faint">{s.label}</span>
-                    </div>
-                  ))}
-                </div>
+            <Canvas>
+              <h3 className="h3 text-[15.5px] mb-4">Card skeletons</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mb-8">
+                <Skeleton variant="card" />
+                <Skeleton variant="card" />
+                <Skeleton variant="card" />
               </div>
-              <div className="bg-surface border border-border rounded-lg p-6">
-                <div className="font-heading font-bold text-sm mb-3.5 text-text">Radius scale</div>
-                <div className="flex flex-col gap-3.5">
-                  {[
-                    { label: "rounded-sm", radius: "10px" },
-                    { label: "rounded-md", radius: "14px" },
-                    { label: "rounded-lg", radius: "18px" },
-                    { label: "rounded-xl", radius: "26px" },
-                    { label: "rounded-2xl", radius: "32px" },
-                    { label: "rounded-full", radius: "9999px" },
-                  ].map((r) => (
-                    <div key={r.label} className="flex items-center gap-3">
-                      <div
-                        className="w-14 h-8 border-[1.5px] border-accent"
-                        style={{ borderRadius: r.radius, background: "var(--accent-soft)" }}
-                      />
-                      <code className="text-xs text-text">{r.label} · {r.radius}</code>
-                    </div>
-                  ))}
-                </div>
+
+              <h3 className="h3 text-[15.5px] mb-4">Row skeletons</h3>
+              <div className="flex flex-col gap-2 mb-8">
+                <Skeleton variant="row" count={4} />
               </div>
-            </div>
+
+              <h3 className="h3 text-[15.5px] mb-4">Grid skeleton</h3>
+              <SkeletonGrid columns={4} rows={1} />
+            </Canvas>
           </AnimateIn>
         </section>
 
@@ -360,24 +301,6 @@ export default function App() {
                 <Badge variant="success" shape="pill">Success</Badge>
                 <Badge variant="info" shape="pill">Info</Badge>
                 <Badge variant="grade" shape="pill">PSA 10</Badge>
-              </div>
-            </Canvas>
-          </AnimateIn>
-        </section>
-
-        {/* Cards */}
-        <section className="pt-16">
-          <SectionTitle
-            eyebrow="Components"
-            title="Product Cards"
-            description="The core marketplace surface. Each card pairs a hue-tinted art placeholder with a heading-font title, monospace meta and a magenta price. Hover uses Framer Motion."
-          />
-          <AnimateIn>
-            <Canvas>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-                {DEMO_CARDS.map((card) => (
-                  <Card key={card.name} {...card} />
-                ))}
               </div>
             </Canvas>
           </AnimateIn>
@@ -694,17 +617,17 @@ export default function App() {
             </Canvas>
           </AnimateIn>
         </section>
-
-        {/* Footer */}
-        <footer className="mt-24 pt-10 border-t border-border">
-          <div className="flex items-center gap-3 mb-3">
-            <img src="/assets/deckcenter-logo.svg" alt="Deckcenter" className="h-8 w-auto opacity-60" />
-          </div>
-          <p className="text-xs text-faint font-semibold">
-            Deckcenter Sleeve · v2.0 · 2026 · DC Design
-          </p>
-        </footer>
       </main>
+
+      {/* Footer */}
+      <Footer
+        columns={FOOTER_COLUMNS}
+        socials={[
+          { icon: <Globe size={16} />, label: "Website" },
+          { icon: <Mail size={16} />, label: "Email" },
+          { icon: <MessageCircle size={16} />, label: "Discord" },
+        ]}
+      />
     </div>
   )
 }
