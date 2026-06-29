@@ -114,7 +114,7 @@ export default function App() {
               />
               <div className="relative z-[2] max-w-[640px]">
                 <img src="/assets/deckcenter-logo-light.svg" alt="Deckcenter" className="h-14 w-auto mb-5" />
-                <h1 className="text-white mb-3.5">Design System</h1>
+                <h1 className="text-white mb-3.5">Sleeve</h1>
                 <p className="text-on-navy/75 text-base leading-relaxed mb-6 max-w-[52ch]">
                   A complete, themeable foundation for the Pokémon TCG marketplace. Every surface, token, component, and pattern — light and dark.
                 </p>
@@ -208,10 +208,10 @@ export default function App() {
                 { label: "Heading 1", spec: "Saira 800 · clamp→44", size: "36px", tracking: "-0.02em" },
                 { label: "Heading 2", spec: "Saira 700 · 26–30", size: "26px", tracking: "-0.02em" },
                 { label: "Heading 3 · card titles", spec: "Saira 700 · 15–19", size: "18px" },
-                { label: "Lead paragraph", spec: "Geist 400 · 16–17", size: "16px", muted: true },
+                { label: "Lead paragraph", spec: "Geist 500 · 16–17", size: "16px", muted: true },
                 { label: "Body — default UI text", spec: "Geist 400 · 14–15", size: "14.5px" },
-                { label: "Small — meta, captions", spec: "Geist 500 · 12–13", size: "12.5px", muted: true },
-                { label: "EYEBROW LABEL", spec: "Saira 600 · 11.5 · .14em caps", size: "11.5px", eyebrow: true },
+                { label: "Small — meta, captions", spec: "Geist 400 · 12–13", size: "12.5px", muted: true },
+                { label: "EYEBROW LABEL", spec: "Saira 500 · 11.5 · .14em caps", size: "11.5px", eyebrow: true },
               ].map((t, i) => (
                 <div key={i} className="flex items-baseline justify-between gap-4 px-5 md:px-6 py-4 border-b border-border last:border-0">
                   <span
@@ -701,7 +701,7 @@ export default function App() {
             <img src="/assets/deckcenter-logo.svg" alt="Deckcenter" className="h-8 w-auto opacity-60" />
           </div>
           <p className="text-xs text-faint font-semibold">
-            Deckcenter Design System · v2.0 · 2026 · DC Design
+            Deckcenter Sleeve · v2.0 · 2026 · DC Design
           </p>
         </footer>
       </main>

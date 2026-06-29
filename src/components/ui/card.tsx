@@ -60,7 +60,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         )}
         style={style}
         onClick={onClick}
-        whileHover={{ y: -4, boxShadow: "var(--shadow-lg)" }}
+        whileHover={{ boxShadow: "var(--shadow-lg)" }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="relative rounded-sm overflow-hidden mb-3.5">

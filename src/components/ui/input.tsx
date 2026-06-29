@@ -10,7 +10,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, icon, inputSize = "default", ...props }, ref) => {
     const sizeClasses = {
       sm: "h-9 px-3 text-[13px] rounded-lg",
-      default: "h-11 px-4 text-[15px] rounded-xl",
+      default: "h-11 px-4 text-[15px] rounded-lg",
       lg: "h-14 px-5 text-base rounded-xl",
     }
 

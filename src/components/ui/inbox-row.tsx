@@ -39,13 +39,12 @@ function InboxRow({
   return (
     <motion.div
       className={cn(
-        "grid items-center gap-3 px-3.5 py-3 border-b border-border bg-surface transition-colors",
+        "grid items-center gap-3 px-3.5 py-3 border-b border-border bg-surface transition-colors hover:bg-accent/[0.03]",
         className
       )}
       style={{
         gridTemplateColumns: onSelect ? "20px 32px 1fr auto auto" : "32px 1fr auto auto",
       }}
-      whileHover={{ backgroundColor: "color-mix(in oklch, var(--accent) 3%, var(--surface))" }}
       transition={{ duration: 0.15 }}
     >
       {onSelect && (
@@ -54,7 +53,7 @@ function InboxRow({
             "w-4 h-4 rounded flex items-center justify-center text-[9px] text-white font-extrabold cursor-pointer flex-shrink-0",
             selected
               ? "bg-accent border-accent"
-              : "border border-border-strong bg-transparent"
+              : "border border-border bg-surface-2"
           )}
           onClick={onSelect}
         >
