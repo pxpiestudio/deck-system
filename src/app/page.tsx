@@ -147,7 +147,7 @@ export default function DesignSystemPage() {
                     margin: "0 0 14px",
                   }}
                 >
-                  Deckcenter Design System
+                  Sleeve System
                 </h1>
                 <p
                   style={{
