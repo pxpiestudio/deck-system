@@ -1,41 +1,22 @@
-import * as React from "react"
-import { cn } from "@/lib/utils"
+import * as React from "react";
 
-interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
-  icon?: React.ReactNode
-  inputSize?: "sm" | "default" | "lg"
+import { cn } from "@/lib/utils";
+
+function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+  return (
+    <input
+      type={type}
+      data-slot="input"
+      className={cn(
+        "w-full rounded-[11px] border-[1.5px] border-border-strong bg-surface px-4 py-3 font-body text-[15px] text-text outline-none transition-[border-color,box-shadow] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        "placeholder:text-faint",
+        "focus-visible:border-accent focus-visible:shadow-[0_0_0_3px_var(--accent-soft)]",
+        "disabled:cursor-not-allowed disabled:opacity-50",
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, icon, inputSize = "default", ...props }, ref) => {
-    const sizeClasses = {
-      sm: "h-9 px-3 text-[13px] rounded-lg",
-      default: "h-11 px-4 text-[15px] rounded-lg",
-      lg: "h-14 px-5 text-base rounded-xl",
-    }
-
-    return (
-      <div className={cn("relative", icon && "flex items-center")}>
-        {icon && (
-          <div className="absolute left-4 text-faint pointer-events-none">
-            {icon}
-          </div>
-        )}
-        <input
-          ref={ref}
-          className={cn(
-            "w-full bg-surface border border-border-strong text-text font-sans outline-none transition-all placeholder:text-faint",
-            "focus:border-accent focus:shadow-[0_0_0_3px_var(--accent-soft)]",
-            sizeClasses[inputSize],
-            icon && "pl-10",
-            className
-          )}
-          {...props}
-        />
-      </div>
-    )
-  }
-)
-Input.displayName = "Input"
-
-export { Input }
+export { Input };

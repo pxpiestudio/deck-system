@@ -1,53 +1,49 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
 
+import { cn } from "@/lib/utils";
+
+/**
+ * Generic shadcn-style badge. Deckcenter's domain badges (grade, rarity, order
+ * status) are built on top of this in `components/dc/badges.tsx`.
+ */
 const badgeVariants = cva(
-  "inline-flex items-center gap-1 whitespace-nowrap rounded-md font-heading font-bold text-[11px] h-[22px] px-2 transition-colors",
+  "inline-flex items-center gap-1 rounded-md font-head text-[11px] font-bold tracking-[0.03em] whitespace-nowrap",
   {
     variants: {
       variant: {
-        default:
-          "bg-surface-2 text-muted",
-        grade:
-          "bg-purple/15 text-purple",
-        accent:
-          "bg-accent text-white",
-        accentGhost:
-          "bg-accent-soft text-accent",
-        success:
-          "bg-success text-white",
-        successGhost:
-          "bg-success/12 text-success",
-        warningGhost:
-          "bg-warning/12 text-warning",
-        info:
-          "bg-info text-white",
-        destructiveGhost:
-          "bg-destructive/12 text-destructive",
-        brandGhost:
-          "bg-purple/12 text-purple",
-      },
-      shape: {
-        default: "rounded-md",
-        pill: "rounded-full px-2.5",
+        default: "bg-surface-2 text-muted px-[9px] py-1",
+        accent: "bg-accent-soft text-accent px-[9px] py-1",
+        outline: "border border-border-strong text-muted px-[9px] py-1",
+        solid: "bg-accent text-white px-[9px] py-1",
       },
     },
     defaultVariants: {
       variant: "default",
-      shape: "default",
     },
-  }
-)
+  },
+);
 
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof badgeVariants> {}
+type BadgeProps = React.ComponentProps<"span"> &
+  VariantProps<typeof badgeVariants> & {
+    asChild?: boolean;
+  };
 
-function Badge({ className, variant, shape, ...props }: BadgeProps) {
+function Badge({
+  className,
+  variant,
+  asChild = false,
+  ...props
+}: BadgeProps) {
+  const Comp = asChild ? Slot : "span";
   return (
-    <span className={cn(badgeVariants({ variant, shape }), className)} {...props} />
-  )
+    <Comp
+      data-slot="badge"
+      className={cn(badgeVariants({ variant }), className)}
+      {...props}
+    />
+  );
 }
 
-export { Badge, badgeVariants }
+export { Badge, badgeVariants };
