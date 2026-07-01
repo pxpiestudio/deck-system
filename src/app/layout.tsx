@@ -28,9 +28,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Deckcenter — Design System",
+  title: "Sleeve System",
   description:
-    "A complete, themeable React + shadcn foundation for the Deckcenter Pokémon TCG marketplace. Every surface, token, component, and pattern — light and dark.",
+    "A complete, themeable React + Tailwind foundation for the Deckcenter marketplace. Every surface, token, component, and pattern — light and dark.",
+  icons: {
+    icon: "/assets/deckcenter-icon.svg",
+  },
 };
 
 export default function RootLayout({

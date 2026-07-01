@@ -14,7 +14,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: "bg-surface-2 text-muted px-[9px] py-1",
-        accent: "bg-accent-soft text-accent px-[9px] py-1",
+        accent: "bg-accent-soft text-accent-text px-[9px] py-1",
         outline: "border border-border-strong text-muted px-[9px] py-1",
         solid: "bg-accent text-white px-[9px] py-1",
       },

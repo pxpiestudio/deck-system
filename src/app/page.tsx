@@ -158,7 +158,7 @@ export default function DesignSystemPage() {
                     maxWidth: "52ch",
                   }}
                 >
-                  A complete, themeable foundation for the Pokémon TCG marketplace — now in
+                  A complete, themeable foundation for the Deckcenter marketplace — now in
                   React, Tailwind and shadcn. Every surface, token, component, and pattern —
                   light and dark.
                 </p>
@@ -425,7 +425,7 @@ export default function DesignSystemPage() {
                 </span>
               </TypeRow>
               <TypeRow spec="Saira 700 · 11 · .14em caps">
-                <span style={{ fontFamily: "var(--font-head)", fontSize: 11, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--accent)" }}>
+                <span style={{ fontFamily: "var(--font-head)", fontSize: 11, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--accent-text)" }}>
                   EYEBROW LABEL
                 </span>
               </TypeRow>
@@ -602,7 +602,7 @@ export default function DesignSystemPage() {
                   fontWeight: 700,
                   letterSpacing: ".08em",
                   textTransform: "uppercase",
-                  color: "rgba(232,237,249,.4)",
+                  color: "rgba(232,237,249,.6)",
                   marginBottom: 14,
                 }}
               >
@@ -678,13 +678,13 @@ export default function DesignSystemPage() {
             <div className="ds-h3">Purchase lifecycle — buyer view</div>
             <div className="ds-canvas">
               <div style={{ display: "flex", alignItems: "center", gap: 0, flexWrap: "wrap" }}>
-                <Step color="#f0a030" textColor="#b07018">⏳ Pending</Step>
+                <Step color="#f0a030" textColor="var(--amber-text)">⏳ Pending</Step>
                 <Connector />
-                <Step color="#2a6fdb" textColor="#2a6fdb">✓ Confirmed</Step>
+                <Step color="#2a6fdb" textColor="var(--info-text)">✓ Confirmed</Step>
                 <Connector />
-                <Step color="#8a2bb8" textColor="#8a2bb8">📍 At store · Ready</Step>
+                <Step color="#8a2bb8" textColor="var(--purple-text)">📍 At store · Ready</Step>
                 <Connector />
-                <Step color="#1fad66" textColor="#1fad66">✅ Collected</Step>
+                <Step color="#1fad66" textColor="var(--success-text)">✅ Collected</Step>
               </div>
               <div
                 style={{
@@ -694,7 +694,7 @@ export default function DesignSystemPage() {
                   background: "color-mix(in oklch,#8a2bb8 8%,transparent)",
                   border: "1px solid color-mix(in oklch,#8a2bb8 20%,transparent)",
                   fontSize: 13,
-                  color: "#8a2bb8",
+                  color: "var(--purple-text)",
                   fontFamily: "var(--font-head)",
                   fontWeight: 600,
                 }}
@@ -706,11 +706,11 @@ export default function DesignSystemPage() {
             <div className="ds-h3">Fulfillment lifecycle — seller view</div>
             <div className="ds-canvas">
               <div style={{ display: "flex", alignItems: "center", gap: 0, flexWrap: "wrap" }}>
-                <Step color="#f0a030" textColor="#b07018">💳 Paid</Step>
+                <Step color="#f0a030" textColor="var(--amber-text)">💳 Paid</Step>
                 <Connector />
-                <Step color="#2a6fdb" textColor="#2a6fdb">🏪 At store</Step>
+                <Step color="#2a6fdb" textColor="var(--info-text)">🏪 At store</Step>
                 <Connector />
-                <Step color="#8a2bb8" textColor="#8a2bb8">✅ Ready to pick up</Step>
+                <Step color="#8a2bb8" textColor="var(--purple-text)">✅ Ready to pick up</Step>
               </div>
               <div style={{ fontSize: 12.5, color: "var(--muted)", marginTop: 12 }}>
                 Seller advances each step via a CTA on the sold listing card. Buyer sees the
@@ -846,7 +846,7 @@ export default function DesignSystemPage() {
                 footer={
                   <>
                     Best price: Deckcenter at{" "}
-                    <strong style={{ color: "var(--accent)" }}>$412.50</strong> — save up to
+                    <strong style={{ color: "var(--accent-text)" }}>$412.50</strong> — save up to
                     $59.50
                   </>
                 }
@@ -872,13 +872,13 @@ export default function DesignSystemPage() {
                 subtitle="Obsidian Flames · Seller: PokeVault"
                 dim
                 status={
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontFamily: "var(--font-head)", fontSize: 11, fontWeight: 700, padding: "4px 9px", borderRadius: 7, color: "#1fad66", background: "color-mix(in oklch,#1fad66 12%,transparent)", whiteSpace: "nowrap" }}>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontFamily: "var(--font-head)", fontSize: 11, fontWeight: 700, padding: "4px 9px", borderRadius: 7, color: "var(--success-text)", background: "color-mix(in oklch,#1fad66 12%,transparent)", whiteSpace: "nowrap" }}>
                     ✅ Collected
                   </span>
                 }
                 trailing={
                   <>
-                    <div style={{ fontFamily: "var(--font-head)", fontWeight: 700, fontSize: 14, color: "var(--accent)" }}>$89.99</div>
+                    <div style={{ fontFamily: "var(--font-head)", fontWeight: 700, fontSize: 14, color: "var(--accent-text)" }}>$89.99</div>
                     <div style={{ fontSize: 11, color: "var(--faint)", marginTop: 2 }}>Jun 18</div>
                   </>
                 }
@@ -889,13 +889,13 @@ export default function DesignSystemPage() {
                 subtitle="Evolving Skies · Seller: CardDen"
                 note="📍 Pick up at PokeNest Kanto · 0.8 km"
                 status={
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontFamily: "var(--font-head)", fontSize: 11, fontWeight: 700, padding: "4px 9px", borderRadius: 7, color: "#8a2bb8", background: "color-mix(in oklch,#8a2bb8 13%,transparent)", whiteSpace: "nowrap" }}>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontFamily: "var(--font-head)", fontSize: 11, fontWeight: 700, padding: "4px 9px", borderRadius: 7, color: "var(--purple-text)", background: "color-mix(in oklch,#8a2bb8 13%,transparent)", whiteSpace: "nowrap" }}>
                     📍 At store · Ready
                   </span>
                 }
                 trailing={
                   <>
-                    <div style={{ fontFamily: "var(--font-head)", fontWeight: 700, fontSize: 14, color: "var(--accent)" }}>$44.50</div>
+                    <div style={{ fontFamily: "var(--font-head)", fontWeight: 700, fontSize: 14, color: "var(--accent-text)" }}>$44.50</div>
                     <div style={{ fontSize: 11, color: "var(--faint)", marginTop: 2 }}>Jun 20</div>
                   </>
                 }
@@ -999,7 +999,7 @@ function SellingInbox() {
           Select all · 2 sold
         </span>
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontFamily: "var(--font-head)", fontWeight: 700, fontSize: 12, color: "var(--accent)" }}>
+          <span style={{ fontFamily: "var(--font-head)", fontWeight: 700, fontSize: 12, color: "var(--accent-text)" }}>
             {selected ? "1 selected" : "0 selected"}
           </span>
           <Button size="sm" className="text-[11px]">Advance status →</Button>
@@ -1020,7 +1020,7 @@ function SellingInbox() {
               padding: "5px 10px",
               borderRadius: 8,
               cursor: "pointer",
-              color: "#b07018",
+              color: "var(--amber-text)",
               background: "color-mix(in oklch,#f0a030 14%,transparent)",
               border: "none",
               whiteSpace: "nowrap",

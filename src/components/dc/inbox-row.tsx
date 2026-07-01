@@ -52,7 +52,6 @@ export function InboxRow({
         selected
           ? "bg-[color-mix(in_oklch,var(--accent)_5%,transparent)]"
           : "bg-surface",
-        dim && "opacity-55",
         className,
       )}
       style={{
@@ -79,17 +78,23 @@ export function InboxRow({
         </button>
       )}
 
+      {/*
+       * `dim` fades only the thumbnail, not text — opacity on text content
+       * scales every text color toward the background and reliably drops
+       * otherwise-AA-compliant colors (muted, faint) below 4.5:1, since they
+       * already sit close to the threshold at full opacity.
+       */}
       <CardArt
         hue={hue}
         holo={false}
-        className="h-11 w-8 shrink-0 rounded-md"
+        className={cn("h-11 w-8 shrink-0 rounded-md", dim && "opacity-55")}
       />
 
       <div className="min-w-0">
         <div className="truncate font-head text-[13.5px] font-bold">{title}</div>
         <div className="mt-[3px] truncate text-[11px] text-muted">{subtitle}</div>
         {note && (
-          <div className="mt-[5px] inline-flex items-center gap-1 rounded-full bg-[color-mix(in_oklch,var(--purple)_12%,transparent)] px-[9px] py-0.5 font-head text-[11px] font-semibold text-purple">
+          <div className="mt-[5px] inline-flex items-center gap-1 rounded-full bg-[color-mix(in_oklch,var(--purple)_12%,transparent)] px-[9px] py-0.5 font-head text-[11px] font-semibold text-purple-text">
             {note}
           </div>
         )}
