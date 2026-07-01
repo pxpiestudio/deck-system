@@ -30,8 +30,10 @@ type InboxRowProps = {
 };
 
 /**
- * Dense list row: `checkbox · thumbnail · info · status · trailing`.
- * Scales to hundreds of orders without a card grid.
+ * Dense list row: `checkbox · thumbnail · title/subtitle · status · trailing`.
+ * Named CSS grid areas (`.ib-row` in globals.css) let the same markup reflow
+ * from one dense desktop line to a stacked mobile card without duplicating
+ * JSX — see the `max-width: 640px` override there.
  */
 export function InboxRow({
   hue,
@@ -48,17 +50,13 @@ export function InboxRow({
   return (
     <div
       className={cn(
-        "grid items-center gap-3 border-b border-border-soft px-[14px] py-[11px] last:border-b-0",
+        "ib-row border-b border-border-soft px-[14px] py-[11px] last:border-b-0",
+        checkbox && "ib-row--checkbox",
         selected
           ? "bg-[color-mix(in_oklch,var(--accent)_5%,transparent)]"
           : "bg-surface",
         className,
       )}
-      style={{
-        gridTemplateColumns: checkbox
-          ? "20px 32px 1fr auto auto"
-          : "32px 1fr auto auto",
-      }}
     >
       {checkbox && (
         <button
@@ -68,7 +66,7 @@ export function InboxRow({
           aria-label={`Select ${title}`}
           onClick={() => checkbox.onChange(!checkbox.checked)}
           className={cn(
-            "grid size-4 place-items-center rounded text-[9px] font-extrabold text-white transition-colors",
+            "ib-checkbox grid size-4 place-items-center rounded text-[9px] font-extrabold text-white transition-colors",
             checkbox.checked
               ? "bg-accent"
               : "border-[1.5px] border-border-strong bg-transparent",
@@ -87,22 +85,20 @@ export function InboxRow({
       <CardArt
         hue={hue}
         holo={false}
-        className={cn("h-11 w-8 shrink-0 rounded-md", dim && "opacity-55")}
+        className={cn("ib-thumb h-11 w-8 shrink-0 rounded-md", dim && "opacity-55")}
       />
 
-      <div className="min-w-0">
-        <div className="truncate font-head text-[13.5px] font-bold">{title}</div>
-        <div className="mt-[3px] truncate text-[11px] text-muted">{subtitle}</div>
-        {note && (
-          <div className="mt-[5px] inline-flex items-center gap-1 rounded-full bg-[color-mix(in_oklch,var(--purple)_12%,transparent)] px-[9px] py-0.5 font-head text-[11px] font-semibold text-purple-text">
-            {note}
-          </div>
-        )}
-      </div>
+      <div className="ib-title min-w-0 truncate font-head text-[13.5px] font-bold">{title}</div>
+      <div className="ib-subtitle min-w-0 truncate text-[11px] text-muted">{subtitle}</div>
+      {note && (
+        <div className="ib-note min-w-0 truncate inline-flex items-center gap-1 rounded-full bg-[color-mix(in_oklch,var(--purple)_12%,transparent)] px-[9px] py-0.5 font-head text-[11px] font-semibold text-purple-text">
+          {note}
+        </div>
+      )}
 
-      {status ?? <span />}
+      <div className="ib-status">{status ?? <span />}</div>
 
-      <div className="text-right">{trailing}</div>
+      <div className="ib-trailing text-right">{trailing}</div>
     </div>
   );
 }

@@ -217,64 +217,54 @@ export default function DesignSystemPage() {
             </div>
 
             <div className="ds-h3">Logo variants</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
-              <div
-                style={{
-                  background: "var(--surface)",
-                  border: "1px solid var(--border)",
-                  borderRadius: "var(--radius)",
-                  padding: 28,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/deckcenter-logo.svg" alt="Deckcenter logo" style={{ height: 52 }} />
-              </div>
-              <div
-                style={{
-                  background: "#121427",
-                  borderRadius: "var(--radius)",
-                  padding: 28,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/deckcenter-logo.svg" alt="Deckcenter logo light" style={{ height: 52 }} />
-              </div>
-              <div
-                style={{
-                  background: "var(--surface)",
-                  border: "1px solid var(--border)",
-                  borderRadius: "var(--radius)",
-                  padding: 28,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/deckcenter-mark.svg" alt="Deckcenter mark" style={{ height: 52 }} />
-              </div>
-            </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: 14,
-                fontSize: 12,
-                color: "var(--faint)",
-                fontWeight: 600,
-                textAlign: "center",
-                marginTop: 8,
-              }}
-            >
-              <div>Light mode wordmark</div>
-              <div>Dark / navy wordmark</div>
-              <div>Mark (icon only)</div>
+            <div className="ds-grid-3" style={{ gap: 14 }}>
+              {[
+                {
+                  src: "/assets/deckcenter-logo.svg",
+                  alt: "Deckcenter logo",
+                  caption: "Light mode wordmark",
+                  boxStyle: { background: "var(--surface)", border: "1px solid var(--border)" },
+                },
+                {
+                  src: "/assets/deckcenter-logo.svg",
+                  alt: "Deckcenter logo light",
+                  caption: "Dark / navy wordmark",
+                  boxStyle: { background: "#121427" },
+                },
+                {
+                  src: "/assets/deckcenter-mark.svg",
+                  alt: "Deckcenter mark",
+                  caption: "Mark (icon only)",
+                  boxStyle: { background: "var(--surface)", border: "1px solid var(--border)" },
+                },
+              ].map((v) => (
+                <div key={v.alt}>
+                  <div
+                    style={{
+                      borderRadius: "var(--radius)",
+                      padding: 28,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      ...v.boxStyle,
+                    }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={v.src} alt={v.alt} style={{ height: 52 }} />
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "var(--faint)",
+                      fontWeight: 600,
+                      textAlign: "center",
+                      marginTop: 8,
+                    }}
+                  >
+                    {v.caption}
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
 
@@ -322,7 +312,7 @@ export default function DesignSystemPage() {
             </div>
 
             <div className="ds-h3">Status &amp; signal</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12 }}>
+            <div className="swatch-grid">
               <Swatch block="#1fad66" name="Success / Up" token="#1fad66" small />
               <Swatch block="#e0466b" name="Down / Alert" token="#e0466b" small />
               <Swatch block="#f0a030" name="Amber / Pending" token="#f0a030" small />
@@ -340,7 +330,7 @@ export default function DesignSystemPage() {
               inputs.
             </p>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+            <div className="ds-grid-2" style={{ marginBottom: 16 }}>
               {[
                 { kicker: "Display / Headings", font: "var(--font-head)", weight: 700, ls: "-0.03em", name: "Saira", token: "--font-head" },
                 { kicker: "Body / Inputs", font: "var(--font-body)", weight: 500, ls: "-0.01em", name: "Geist", token: "--font-body" },
@@ -442,7 +432,7 @@ export default function DesignSystemPage() {
               (default 18px) and derived tokens.
             </p>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <div className="ds-grid-2">
               <div
                 style={{
                   background: "var(--surface)",
@@ -510,7 +500,7 @@ export default function DesignSystemPage() {
               Two shadow levels. Both tint to the navy so they feel warm rather than cold
               grey — rgba(18,20,39,…) in light, rgba(0,0,0,…) in dark.
             </p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 4 }}>
+            <div className="ds-grid-2" style={{ marginTop: 4 }}>
               {[
                 { shadow: "var(--shadow)", title: "Default shadow", token: "--shadow", use: "Cards, dropdowns, nav bar at rest" },
                 { shadow: "var(--shadow-lg)", title: "Large shadow", token: "--shadow-lg", use: "Modals, overlays, hovered cards" },
@@ -730,7 +720,7 @@ export default function DesignSystemPage() {
 
             <div className="ds-canvas" style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               <SearchBar className="max-w-[560px]" />
-              <div style={{ display: "flex", gap: 24, alignItems: "flex-end", flexWrap: "wrap" }}>
+              <div className="ds-field-row">
                 <div>
                   <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--faint)", marginBottom: 8 }}>
                     Quantity
@@ -743,7 +733,7 @@ export default function DesignSystemPage() {
                   </div>
                   <LangToggle />
                 </div>
-                <div style={{ flex: 1, minWidth: 200 }}>
+                <div className="ds-field-grow">
                   <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--faint)", marginBottom: 8 }}>
                     Text field
                   </div>
@@ -784,14 +774,7 @@ export default function DesignSystemPage() {
             </p>
 
             <div className="ds-canvas">
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(3, minmax(0,1fr))",
-                  gap: 20,
-                  maxWidth: 720,
-                }}
-              >
+              <div className="ds-grid-cards" style={{ maxWidth: 720 }}>
                 <ProductCard
                   hue={8}
                   rarity="Special"
@@ -922,7 +905,7 @@ export default function DesignSystemPage() {
                   <CardArt key={h} hue={h} style={{ width: 80, height: 112, borderRadius: 8 }} />
                 ))}
               </div>
-              <div style={{ display: "flex", gap: 10, marginTop: 8, fontSize: 11, color: "var(--faint)", fontFamily: "var(--font-mono)" }}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 8, fontSize: 11, color: "var(--faint)", fontFamily: "var(--font-mono)" }}>
                 {HUES.map((h) => (
                   <span key={h} style={{ width: 80, textAlign: "center" }}>
                     --h:{h}

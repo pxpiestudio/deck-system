@@ -99,6 +99,75 @@
   padding: 0 48px 120px;
 }
 
+/* ── Mobile docs chrome (header + drawer) — hidden on desktop ── */
+.ds-mobile-header {
+  display: none;
+}
+.ds-mobile-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.ds-mobile-brand img {
+  height: 30px;
+  width: auto;
+  flex-shrink: 0;
+}
+.ds-mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.ds-mobile-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.ds-mobile-menu-btn:hover {
+  background: var(--surface);
+}
+.ds-sidebar-close {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-left: auto;
+  border-radius: 9px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.ds-sidebar-close:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.ds-sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease);
+  z-index: 70;
+}
+.ds-sidebar-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 /* ── Section helpers ── */
 .ds-section {
   scroll-margin-top: 24px;
@@ -231,18 +300,106 @@
   flex-wrap: wrap;
 }
 
+/* ── Generic content grids (logo variants, spec cards, product cards) ── */
+.ds-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.ds-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.ds-grid-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.ds-field-row {
+  display: flex;
+  gap: 24px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.ds-field-grow {
+  flex: 1;
+  min-width: 200px;
+}
+
 @media (max-width: 900px) {
-  .ds-sidebar {
-    display: none;
+  /* Sticky mobile header carries the theme toggle + version + menu button. */
+  .ds-mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 10px 16px;
+    background: color-mix(in oklch, var(--surface) 88%, transparent);
+    backdrop-filter: saturate(1.2) blur(8px);
+    border-bottom: 1px solid var(--border);
   }
+  .ds-mobile-header .ds-logo-sub {
+    letter-spacing: 0.02em;
+  }
+
+  /* Sidebar becomes an off-canvas drawer, slid in from the left.
+     `visibility: hidden` (not just transform) keeps the closed drawer out of
+     the tab order for keyboard/AT users; it re-shows before the slide-in. */
+  .ds-sidebar {
+    width: min(84vw, 300px);
+    z-index: 71;
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform 0.3s var(--ease), visibility 0s linear 0.3s;
+  }
+  .ds-sidebar.open {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform 0.3s var(--ease), visibility 0s linear 0s;
+  }
+  .ds-sidebar-close {
+    display: inline-flex;
+  }
+
   .ds-main {
     margin-left: 0;
   }
   .ds-wrap {
     padding: 0 24px 96px;
   }
+  /* Offset in-page anchors so a jumped-to section clears the sticky header. */
+  .ds-section {
+    scroll-margin-top: 72px;
+  }
   .swatch-grid,
   .swatch-grid-5 {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .ds-grid-2,
+  .ds-grid-3,
+  .ds-grid-cards {
+    grid-template-columns: 1fr;
+  }
+  .ds-field-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .ds-field-grow {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .type-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 }

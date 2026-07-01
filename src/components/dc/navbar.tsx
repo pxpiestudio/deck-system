@@ -65,6 +65,27 @@ export function Navbar({
   className,
 }: NavbarProps) {
   const { t } = useLanguage();
+  const [open, setOpen] = React.useState(false);
+  const hamburgerRef = React.useRef<HTMLButtonElement>(null);
+  const closeRef = React.useRef<HTMLButtonElement>(null);
+  const closeMenu = React.useCallback(() => setOpen(false), []);
+
+  React.useEffect(() => {
+    if (!open) return;
+    const hamburgerEl = hamburgerRef.current;
+    closeRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+      hamburgerEl?.focus();
+    };
+  }, [open]);
 
   return (
     <div className={cn("overflow-hidden rounded-[var(--radius)] border border-border-soft", className)}>
@@ -98,6 +119,16 @@ export function Navbar({
       {/* Main bar */}
       <div className="nav-main">
         <div className="nav-inner">
+          <button
+            type="button"
+            className="nav-hamburger"
+            aria-label="Open menu"
+            aria-expanded={open}
+            ref={hamburgerRef}
+            onClick={() => setOpen(true)}
+          >
+            <Icon name="menu" size={22} />
+          </button>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="nav-logo" src="/assets/deckcenter-logo.svg" alt="Deckcenter" />
           <div className="nav-links">
@@ -113,10 +144,10 @@ export function Navbar({
 
             {state === "guest" && (
               <>
-                <Button variant="quiet" size="sm">
+                <Button variant="quiet" size="sm" className="nav-actions-desktop-only">
                   {t("nav.signIn")}
                 </Button>
-                <Button variant="primary" size="sm">
+                <Button variant="primary" size="sm" className="nav-actions-desktop-only">
                   {t("nav.sellCards")}
                 </Button>
               </>
@@ -124,7 +155,11 @@ export function Navbar({
 
             {state === "buyer" && (
               <>
-                <Button variant="quiet" size="sm" className="gap-1.5 text-[13px] text-muted">
+                <Button
+                  variant="quiet"
+                  size="sm"
+                  className="nav-actions-desktop-only gap-1.5 text-[13px] text-muted"
+                >
                   {t("nav.startSelling")} <span className="opacity-50">→</span>
                 </Button>
                 <div className="nav-avatar">{avatar}</div>
@@ -136,11 +171,71 @@ export function Navbar({
                 <RoleSwitcher
                   defaultValue="seller"
                   labels={{ buyer: t("role.buyer"), seller: t("role.seller") }}
+                  className="nav-actions-desktop-only"
                 />
                 <div className="nav-avatar">{avatar}</div>
               </>
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Mobile nav drawer */}
+      <div
+        className={cn("nav-drawer-backdrop", open && "open")}
+        aria-hidden="true"
+        onClick={closeMenu}
+      />
+      <div
+        className={cn("nav-drawer", open && "open")}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
+        inert={!open || undefined}
+      >
+        <div className="nav-drawer-head">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="nav-logo" src="/assets/deckcenter-logo.svg" alt="Deckcenter" />
+          <button
+            type="button"
+            className="nav-drawer-close"
+            aria-label="Close menu"
+            ref={closeRef}
+            onClick={closeMenu}
+          >
+            <Icon name="close" size={20} />
+          </button>
+        </div>
+        <nav className="nav-drawer-links">
+          {NAV_LINKS.map((key) => (
+            <button key={key} type="button" className="nav-drawer-link" onClick={closeMenu}>
+              {t(key)}
+            </button>
+          ))}
+        </nav>
+        <div className="nav-drawer-foot">
+          {state === "guest" && (
+            <>
+              <Button variant="ghost" className="w-full" onClick={closeMenu}>
+                {t("nav.signIn")}
+              </Button>
+              <Button variant="primary" className="w-full" onClick={closeMenu}>
+                {t("nav.sellCards")}
+              </Button>
+            </>
+          )}
+          {state === "buyer" && (
+            <Button variant="primary" className="w-full" onClick={closeMenu}>
+              {t("nav.startSelling")}
+            </Button>
+          )}
+          {state === "seller" && (
+            <RoleSwitcher
+              defaultValue="seller"
+              labels={{ buyer: t("role.buyer"), seller: t("role.seller") }}
+              className="w-full"
+            />
+          )}
         </div>
       </div>
     </div>

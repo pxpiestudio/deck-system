@@ -546,6 +546,56 @@
   .cmp-row { min-width: calc(50% - 5px); flex: none; }
 }
 
+/* ── Inbox row (dense desktop line → stacked mobile card) ──
+   Named grid areas so the same DOM reflows at the breakpoint instead of
+   needing separate desktop/mobile markup. */
+.ib-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto auto;
+  grid-template-areas:
+    "thumb title    status trailing"
+    "thumb subtitle status trailing"
+    "thumb note     note   note";
+  column-gap: 12px;
+  align-items: center;
+}
+.ib-row--checkbox {
+  grid-template-columns: 20px 32px 1fr auto auto;
+  grid-template-areas:
+    "checkbox thumb title    status trailing"
+    "checkbox thumb subtitle status trailing"
+    "checkbox thumb note     note   note";
+}
+.ib-checkbox { grid-area: checkbox; }
+.ib-thumb { grid-area: thumb; }
+.ib-title { grid-area: title; }
+.ib-subtitle { grid-area: subtitle; margin-top: 3px; }
+.ib-note { grid-area: note; margin-top: 5px; justify-self: start; max-width: 100%; }
+.ib-status { grid-area: status; justify-self: end; margin-left: 8px; }
+.ib-trailing { grid-area: trailing; }
+
+@media (max-width: 640px) {
+  .ib-row {
+    grid-template-columns: 32px 1fr auto;
+    grid-template-areas:
+      "thumb title    trailing"
+      "thumb subtitle subtitle"
+      "thumb status   status"
+      "thumb note     note";
+    row-gap: 4px;
+    align-items: start;
+  }
+  .ib-row--checkbox {
+    grid-template-columns: 20px 32px 1fr auto;
+    grid-template-areas:
+      "checkbox thumb title    trailing"
+      "checkbox thumb subtitle subtitle"
+      "checkbox thumb status   status"
+      "checkbox thumb note     note";
+  }
+  .ib-status { justify-self: start; margin-left: 0; margin-top: 2px; }
+}
+
 /* ── Utility-bar buttons (on navy) ── */
 .nu-link {
   font-size: 12px;
@@ -667,6 +717,113 @@
   flex-shrink: 0;
 }
 .nav-portal-btn:hover { background: rgba(255, 255, 255, 0.16); }
+
+/* ── Mobile nav: hamburger + slide-in drawer ──
+   Below ~800px the logo + links + actions no longer fit on one 64px row
+   (measured natural width ~718px including padding). Rather than wrap or
+   clip, the inline links and secondary actions move into a slide-in drawer;
+   the top bar keeps only the logo, cart and identity (avatar). */
+.nav-hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.nav-hamburger:hover { background: var(--accent-soft); color: var(--accent); }
+
+.nav-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease);
+  z-index: 60;
+}
+.nav-drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+
+.nav-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(82vw, 320px);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  z-index: 61;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s var(--ease);
+}
+.nav-drawer.open { transform: translateX(0); }
+.nav-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.nav-drawer-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-drawer-close:hover { background: var(--surface-2); color: var(--text); }
+.nav-drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px;
+}
+.nav-drawer-link {
+  width: 100%;
+  text-align: left;
+  padding: 13px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 15.5px;
+  font-weight: 500;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.nav-drawer-link:hover { background: var(--surface-2); }
+.nav-drawer-foot {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border-top: 1px solid var(--border);
+}
+.nav-drawer-foot .role-switcher.w-full { justify-content: stretch; }
+.nav-drawer-foot .role-switcher.w-full .rs-opt { flex: 1 1 0%; text-align: center; }
+
+@media (max-width: 800px) {
+  .nav-inner { padding: 0 16px; }
+  .nav-logo { height: 30px; }
+  .nav-hamburger { display: inline-flex; }
+  .nav-links { display: none; }
+  .nav-actions-desktop-only { display: none; }
+}
 
 /* ── Keyframes ── */
 @keyframes acIn {
