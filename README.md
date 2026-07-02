@@ -87,6 +87,102 @@ import { ProductCard, StatusBadge } from "@/components/dc";
 <StatusBadge tone="confirmed">Confirmed</StatusBadge>
 ```
 
+## Consuming this design system in another project
+
+This repo publishes itself as a private, versioned package —
+`@pxpiestudio/deckcenter-ds` — to **GitHub Packages**. Another platform installs
+it as a dependency and pulls updates through normal semver: when the design
+system is updated here and a new version is published, a consumer just runs
+`npm update` and keeps building. (It is *not* a shadcn "copy the files in"
+registry — consumers do not own or edit the component source.)
+
+Target stack for consumers: **React 19 + Tailwind v4**.
+
+### 1. Authenticate to GitHub Packages
+
+Both the consuming project and each teammate need read access to the
+`pxpiestudio` org. In the consuming project's root, add an `.npmrc`:
+
+```ini
+@pxpiestudio:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+Then export a GitHub Personal Access Token (classic) with the `read:packages`
+scope as `NODE_AUTH_TOKEN` (do **not** commit the token itself).
+
+### 2. Install
+
+```bash
+npm install @pxpiestudio/deckcenter-ds
+```
+
+`react` / `react-dom` are peer dependencies (use the host app's copy). The
+component runtime deps (`clsx`, `tailwind-merge`, `class-variance-authority`,
+`lucide-react`, `@radix-ui/react-slot`) come along automatically.
+
+### 3. Wire up the stylesheet + Tailwind scanning
+
+In the consuming app's Tailwind entry CSS:
+
+```css
+@import "tailwindcss";
+@import "@pxpiestudio/deckcenter-ds/styles.css";
+
+/* Tailwind ignores node_modules by default. This tells it to scan the
+   package's compiled components so it emits the utility classes they use
+   (bg-surface, text-muted, …). Adjust the relative path to reach your
+   node_modules; the important part is the package's dist folder. */
+@source "../node_modules/@pxpiestudio/deckcenter-ds/dist";
+```
+
+`styles.css` ships the design tokens, the `@theme` bridge and all the ported
+component classes — so `bg-surface`, `text-muted`, `.pcard`, `.sb-*`, etc. are
+available to the components **and** to your own new UI built on the same tokens.
+
+### 4. Provide the fonts (important)
+
+The tokens reference three font CSS variables that the host app must define —
+otherwise the type falls back to `system-ui`. With Next's font loader:
+
+```tsx
+import { Saira, Geist, Geist_Mono } from "next/font/google";
+
+const saira = Saira({ variable: "--font-saira", subsets: ["latin"], weight: ["400","500","600","700"] });
+const geist = Geist({ variable: "--font-geist", subsets: ["latin"], weight: ["400","500","600","700"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+
+// on <html>: className={`${saira.variable} ${geist.variable} ${geistMono.variable}`}
+```
+
+### 5. Use it
+
+```tsx
+import {
+  ThemeProvider,
+  LanguageProvider,
+  themeInitScript,
+  Button,
+  ProductCard,
+} from "@pxpiestudio/deckcenter-ds";
+
+// Wrap the app once (ThemeProvider drives the `.dark` class; add
+// `themeInitScript` in a <script> before first paint to avoid a theme flash).
+<ThemeProvider>
+  <LanguageProvider>
+    <Button variant="ghost" size="sm">Back</Button>
+    <ProductCard hue={8} name="Charizard ex" price="$412.50" listings="41 listings" />
+  </LanguageProvider>
+</ThemeProvider>
+```
+
+### Releasing a new version (maintainer)
+
+```bash
+npm version patch          # or minor / major — bumps package.json + tags
+git push --follow-tags     # the Publish workflow builds & publishes on the tag
+```
+
 ## Provenance
 
 Recreated from the `project/Design System.html` prototype and the chat
