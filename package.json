@@ -1,11 +1,11 @@
 {
-  "name": "@pxpiestudio/deckcenter-ds",
+  "name": "@pxpiestudio/sleeve-ds",
   "version": "0.1.0",
   "description": "Deckcenter design system — themeable React + Tailwind v4 components, tokens and patterns for the Deckcenter marketplace.",
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pxpiestudio/deck-system.git"
+    "url": "git+https://github.com/pxpiestudio/sleeve-ds.git"
   },
   "sideEffects": [
     "**/*.css"

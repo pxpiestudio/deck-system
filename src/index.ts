@@ -1,11 +1,11 @@
 /**
  * Deckcenter Design System — public package entry point.
  *
- * Consumers install `@pxpiestudio/deckcenter-ds` and import components from
+ * Consumers install `@pxpiestudio/sleeve-ds` and import components from
  * here, plus the stylesheet once at the app root:
  *
- *   import "@pxpiestudio/deckcenter-ds/styles.css";
- *   import { Button, ProductCard, ThemeProvider } from "@pxpiestudio/deckcenter-ds";
+ *   import "@pxpiestudio/sleeve-ds/styles.css";
+ *   import { Button, ProductCard, ThemeProvider } from "@pxpiestudio/sleeve-ds";
  */
 
 // ── Theming / i18n providers ──

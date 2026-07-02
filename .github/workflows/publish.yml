@@ -1,6 +1,6 @@
 name: Publish package
 
-# Publishes @pxpiestudio/deckcenter-ds to GitHub Packages whenever a version
+# Publishes @pxpiestudio/sleeve-ds to GitHub Packages whenever a version
 # tag is pushed, e.g.:
 #   npm version patch   # bumps package.json + creates the tag
 #   git push --follow-tags

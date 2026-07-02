@@ -90,7 +90,7 @@ import { ProductCard, StatusBadge } from "@/components/dc";
 ## Consuming this design system in another project
 
 This repo publishes itself as a private, versioned package —
-`@pxpiestudio/deckcenter-ds` — to **GitHub Packages**. Another platform installs
+`@pxpiestudio/sleeve-ds` — to **GitHub Packages**. Another platform installs
 it as a dependency and pulls updates through normal semver: when the design
 system is updated here and a new version is published, a consumer just runs
 `npm update` and keeps building. (It is *not* a shadcn "copy the files in"
@@ -114,7 +114,7 @@ scope as `NODE_AUTH_TOKEN` (do **not** commit the token itself).
 ### 2. Install
 
 ```bash
-npm install @pxpiestudio/deckcenter-ds
+npm install @pxpiestudio/sleeve-ds
 ```
 
 `react` / `react-dom` are peer dependencies (use the host app's copy). The
@@ -127,13 +127,13 @@ In the consuming app's Tailwind entry CSS:
 
 ```css
 @import "tailwindcss";
-@import "@pxpiestudio/deckcenter-ds/styles.css";
+@import "@pxpiestudio/sleeve-ds/styles.css";
 
 /* Tailwind ignores node_modules by default. This tells it to scan the
    package's compiled components so it emits the utility classes they use
    (bg-surface, text-muted, …). Adjust the relative path to reach your
    node_modules; the important part is the package's dist folder. */
-@source "../node_modules/@pxpiestudio/deckcenter-ds/dist";
+@source "../node_modules/@pxpiestudio/sleeve-ds/dist";
 ```
 
 `styles.css` ships the design tokens, the `@theme` bridge and all the ported
@@ -164,7 +164,7 @@ import {
   themeInitScript,
   Button,
   ProductCard,
-} from "@pxpiestudio/deckcenter-ds";
+} from "@pxpiestudio/sleeve-ds";
 
 // Wrap the app once (ThemeProvider drives the `.dark` class; add
 // `themeInitScript` in a <script> before first paint to avoid a theme flash).
